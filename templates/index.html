@@ -1,0 +1,155 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Habit Tree</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}" />
+		<noscript><link rel="stylesheet" href="{{url_for('static', filename='css/noscript.css')}}" /></noscript>
+		 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Day left',     {{current_user.left_day}}],
+          ['completed',      {{current_user.goal}}],
+          ['missed',  {{current_user.missed_day}}]
+        ]);
+
+        var options = {
+          pieHole: 0.55,
+          backgroundColor: 'transparent',
+          legend: {position: 'none'},
+          chartArea: {width:'100%', height:'100%'},
+          colors: ['transparent', '#137042', '#70131e'],
+          pieSliceBorderColor : "transparent",
+           pieSliceTextStyle: {
+            color: 'transparent',
+          }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+      }
+    </script>
+
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="content">
+							<div class="inner">
+								<h1>HABIT TREE</h1>
+								<form action="#" method="post">
+									{% if change_goal %}
+									<input class="form-control" type="text" placeholder="Your goal" name="goal" value="{{old_goal}}">
+									<input type="submit" value="submit">
+									{% elif current_user.goal_name == None %}
+									<input class="form-control" type="text" placeholder="Create your goal" name="goal">
+									<input type="submit" value="submit">
+
+								</form>
+								{% else %}
+									<button formaction="{{url_for('patch_goal_name')}}" class="btn btn-outline-light goal_btn" style="padding-top: 10px; margin-bottom: 20px"><a href="{{url_for('patch_goal_name')}}" ><p>{{current_user.goal_name}}</p></a></button>
+										<p><br>Hi, {{current_user.name}}
+										<br>don't forget to pursue your goal.</p>
+									{% endif %}
+
+</p>
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#tree">My Tree</a></li>
+								<li><a href="#progress">Progress</a></li>
+								<li><a href="#flowers">Flowers</a></li>
+								<li><a href="{{url_for('logout')}}">Log out</a></li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Tree -->
+							<article id="tree">
+								{% if current_user.goal_name == 'None' or not current_user.goal_name %}
+
+								<form action="#" method="post">
+									<input type="text" placeholder="Create your goal" name="goal">
+								</form>
+
+								{% else %}
+								{% if current_user.clicked != now %}
+									<a href="{{url_for('patch_goal')}}"><span><img class="flower" src="{{flower}}" alt=""> </span></a>
+									{% endif %}
+									<h2 class="major">My Tree</h2>
+									<p>{{current_user.goal_name}}</p>
+									<span class="main image"><img src="{{tree}}" alt=""> </span>
+								{% endif %}
+
+							</article>
+
+						<!-- Progress -->
+							<article id="progress">
+								{% if current_user.goal_name == 'None' or not current_user.goal_name %}
+									<form action="#" method="post">
+									<input type="text" placeholder="Create your goal" name="goal">
+									</form>
+
+								{% else %}
+									<h2 class="major">Progress</h2>
+									<p>{{current_user.left_day}} days to go</p>
+									<div>
+										<div class="chart" id="donutchart" style="width: 400px; height: 400px;"></div>
+									</div>
+									<h2 class="major">Flowers</h2>
+									<p>{{'🌼  '* (current_user.goal // 7)}}</p>
+
+								{% endif %}
+							</article>
+						<article id="flowers">
+								{% if current_user.goal_name == 'None' or not current_user.goal_name %}
+									<form action="#" method="post">
+									<input type="text" placeholder="Create your goal" name="goal">
+									</form>
+
+								{% else %}
+
+									<h2 class="major">Flowers</h2>
+									<p>{{'🌼  '* (current_user.goal // 7)}}</p>
+
+								{% endif %}
+							</article>
+
+						<!-- Logout -->
+						<article id="logout"></article>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p class="copyright">&copy; {{year}}</p>
+					</footer>
+
+			</div>
+
+		<!-- BG -->
+			<div id="bg"></div>
+
+		<!-- Scripts -->
+			<script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+			<script src="{{url_for('static', filename='js/browser.min.js')}}"></script>
+			<script src="{{url_for('static', filename='js/breakpoints.min.js')}}"></script>
+			<script src="{{url_for('static', filename='js/util.js')}}"></script>
+			<script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+	</body>
+</html>
