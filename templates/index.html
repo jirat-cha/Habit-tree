@@ -59,7 +59,7 @@
 								{% else %}
 									<button formaction="{{url_for('patch_goal_name')}}" class="btn btn-outline-light goal_btn" style="padding-top: 10px; margin-bottom: 20px"><a href="{{url_for('patch_goal_name')}}" ><p>{{current_user.goal_name}}</p></a></button>
 										<p><br>Hi, {{current_user.name}}
-										<br>don't forget to pursue your goal.</p>
+										<br>don't forget to pursue your goal. <br> to record your goal click the flower in the tree page once a day</p>
 									{% endif %}
 
 </p>
@@ -89,9 +89,18 @@
 								{% else %}
 								{% if current_user.clicked != now %}
 									<a href="{{url_for('patch_goal')}}"><span><img class="flower" src="{{flower}}" alt=""> </span></a>
-									{% endif %}
 									<h2 class="major">My Tree</h2>
 									<p>{{current_user.goal_name}}</p>
+									<p>if you've already {{current_user.goal}}, feel free to click the flower</p>
+								{% else %}
+								<h2 class="major">My Tree</h2>
+								<p>{{current_user.goal_name}}</p>
+									<p>you've already completed your goal</p>
+										
+									{% endif %}
+									
+									
+									
 									<span class="main image"><img src="{{tree}}" alt=""> </span>
 								{% endif %}
 
