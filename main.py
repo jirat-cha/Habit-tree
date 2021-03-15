@@ -87,7 +87,7 @@ def home():
                     flash('Invalid password')
             else:
                 flash('Invalid email')
-        return render_template('login.html', registerform=register_form, loginform=login_form)
+        return render_template('login.html', registerform=register_form, loginform=login_form, year=now.year)
     else:
         if (current_user.goal_name or current_user.left_day != 365) and current_user.clicked:
             cdate = current_user.clicked.split('-')
