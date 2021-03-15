@@ -62,7 +62,7 @@ def home():
                 left_day=365,
                 missed_day=0
             )
-            if register_form.password.data != register_form.verify_password:
+            if register_form.password.data != register_form.verify_password.data:
                 flash('Invalid password')
                 return redirect(url_for('home') + '#register')
             try:
