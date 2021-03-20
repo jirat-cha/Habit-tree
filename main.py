@@ -6,9 +6,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from form import RegisterForm, LoginForm
 from sqlalchemy.exc import IntegrityError
+from flask_gzip import Gzip
 import os
 
 app = Flask(__name__)
+gzip = Gzip(app)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 Bootstrap(app)
 login_manager = LoginManager()
