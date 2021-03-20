@@ -108,7 +108,7 @@ def home():
     return render_template('index.html', year=now.year, now=str(now), old_goal=old_goal, change_goal=change_goal,
                            days=list(range(1, 366-current_user.left_day)),
                            flower=url_for('static', filename=f"images/flower/flower{current_user.goal%7 + 1}.png"),
-                           tree=url_for('static', filename=f"images/tree/tree{current_user.goal+1}.png"))
+                           tree=url_for('static', filename=f"images/tree/tree{current_user.goal+1}.png"), favicon=url_for('static', filename=f'habit-tree-favicon/tree{current_user.goal+1}'))
 
 
 @app.route('/#logout')
