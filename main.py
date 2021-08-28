@@ -147,9 +147,9 @@ def linear_regression():
     regressor = LinearRegression()
     regressor.fit(x, y)
     result = {
-        'coef': regressor.coef_.tolist,
-        'y-int': regressor.intercept_.tolist,
-        'r-square': regressor.score(x, y).tolist,
+        'coef': regressor.coef_.tolist(),
+        'y-int': regressor.intercept_.tolist(),
+        'r-square': regressor.score(x, y).tolist(),
     }
     return jsonify(result)
 
@@ -165,9 +165,9 @@ def poly_regression():
     regressor.fit(x_poly, y)
 
     result = {
-        'coef': regressor.coef_.tolist,
-        'y-int': regressor.intercept_.tolist,
-        'r-square': regressor.score(x_poly, y).tolist,
+        'coef': regressor.coef_.tolist(),
+        'y-int': regressor.intercept_.tolist(),
+        'r-square': regressor.score(x_poly, y).tolist(),
     }
 
     return jsonify(result)
