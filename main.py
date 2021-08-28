@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from flask_bootstrap import Bootstrap
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -8,6 +8,9 @@ from form import RegisterForm, LoginForm
 from sqlalchemy.exc import IntegrityError
 from flask_gzip import Gzip
 import os
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+import numpy as np
 
 app = Flask(__name__)
 gzip = Gzip(app)
@@ -135,6 +138,39 @@ def patch_goal_name():
     current_user.goal_name = None
     db.session.commit()
     return redirect(url_for('home', change_goal=True, old_goal=old_goal))
+
+
+@app.route('/get_linear_coef', methods=['GET'])
+def linear_regression():
+    x = np.array(request.args.get('x')).transpose()
+    y = request.args.get('y')
+    regressor = LinearRegression()
+    regressor.fit(x, y)
+    result = {
+        'coef': regressor.coef_,
+        'y-int': regressor.intercept_,
+        'r-square': regressor.score(x, y),
+    }
+    return jsonify(result)
+
+
+@app.route('/get_poly_coef', methods=['GET'])
+def poly_regression():
+    x = np.array(request.args.get('x')).transpose()
+    y = request.args.get('y')
+    degree = request.args.get('degree')
+    x_poly = PolynomialFeatures(degree=degree, include_bias=False).fit_transform(x)
+
+    regressor = LinearRegression()
+    regressor.fit(x_poly, y)
+
+    result = {
+        'coef': regressor.coef_,
+        'y-int': regressor.intercept_,
+        'r-square': regressor.score(x_poly, y),
+    }
+
+    return jsonify(result)
 
 
 if __name__ == '__main__':
