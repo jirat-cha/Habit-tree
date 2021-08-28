@@ -142,8 +142,8 @@ def patch_goal_name():
 
 @app.route('/get_linear_coef', methods=['GET'])
 def linear_regression():
-    x = np.array(request.args.get('x')).transpose()
-    y = request.args.get('y')
+    x = np.array(eval(request.args.get('x'))).transpose()
+    y = eval(request.args.get('y'))
     regressor = LinearRegression()
     regressor.fit(x, y)
     result = {
@@ -156,8 +156,8 @@ def linear_regression():
 
 @app.route('/get_poly_coef', methods=['GET'])
 def poly_regression():
-    x = np.array(request.args.get('x')).transpose()
-    y = request.args.get('y')
+    x = np.array(eval(request.args.get('x'))).transpose()
+    y = eval(request.args.get('y'))
     degree = request.args.get('degree')
     x_poly = PolynomialFeatures(degree=degree, include_bias=False).fit_transform(x)
 
