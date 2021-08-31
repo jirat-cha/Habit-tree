@@ -158,7 +158,7 @@ def linear_regression():
 def poly_regression():
     x = np.array(eval(request.args.get('x'))).transpose()
     y = eval(request.args.get('y'))
-    degree = request.args.get('degree')
+    degree = eval(request.args.get('degree'))
     x_poly = PolynomialFeatures(degree=degree, include_bias=False).fit_transform(x)
 
     regressor = LinearRegression()
